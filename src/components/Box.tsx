@@ -1,4 +1,4 @@
-import { MouseEvent, MutableRefObject, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 
 type event = MouseEvent<HTMLElement>;
 
@@ -16,16 +16,23 @@ function Box() {
   }
 
   function dragging(e: event) {
+    e.preventDefault();
     if (isDrag) {
-      const container = document.querySelector('.draggable-container');
-      const containerWidth = container?.getBoundingClientRect().width;
-      const containerHeight = container?.getBoundingClientRect().height;
-      const left = e.screenX - diffX;
-      const top = e.screenY - diffY;
+      const container = document.getElementsByClassName(
+        'draggable-container'
+      )[0];
+      const endOfPosX =
+        container.clientWidth - e.currentTarget.getBoundingClientRect().width;
+      const endOfPosY =
+        container.clientHeight - e.currentTarget.getBoundingClientRect().height;
+      const newDiffX = e.screenX - diffX;
+      const newDiffY = e.screenY - diffY;
+
+      const left = Math.min(Math.max(0, newDiffX), endOfPosX);
+      const top = Math.min(Math.max(0, newDiffY), endOfPosY);
 
       setStyles({ left: left, top: top });
     }
-    e.preventDefault();
   }
 
   function dragEnd() {
@@ -38,6 +45,7 @@ function Box() {
       onMouseDown={(e) => dragStart(e)}
       onMouseMove={(e) => dragging(e)}
       onMouseUp={dragEnd}
+      onMouseLeave={dragEnd}
       style={styles}
       draggable
     >

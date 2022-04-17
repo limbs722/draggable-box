@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import Box from './Box';
 
 function Draggable(props: any) {

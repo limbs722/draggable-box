@@ -1,5 +1,4 @@
-import React from 'react';
-import { Draggable, Box } from 'components';
+import { Draggable } from 'components';
 import './assets/css/App.scss';
 
 function App() {
